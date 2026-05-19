@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2026 B2B Competitor Intelligence Dashboard</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts Inter & Playfair Display -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <!-- Font Awesome for sleek micro-icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f5f7fa',
+                            100: '#e4ebf3',
+                            200: '#c2d2e3',
+                            500: '#3a7cbd',
+                            800: '#1b3a5b',
+                            900: '#0f2238',
+                        },
+                        accent: {
+                            purple: '#8b5cf6',
+                            emerald: '#10b981',
+                            amber: '#f59e0b',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom scrollbars for clean comparison scroll */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(241, 245, 249, 1);
+        }
+        .dark ::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 1);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(186, 200, 215, 1);
+            border-radius: 4px;
+        }
+        .dark ::-webkit-scrollbar-thumb {
+            background: rgba(51, 65, 85, 1);
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(100, 116, 139, 1);
+        }
+        .glass-panel {
+            backdrop-filter: blur(12px);
+            background: rgba(255, 255, 255, 0.85);
+        }
+        .dark .glass-panel {
+            background: rgba(15, 23, 42, 0.9);
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 font-sans min-h-screen transition-colors duration-300 dark:bg-slate-950 dark:text-slate-100">
+
+    <script>
+        // Core dataset mapped strictly to user criteria with realistic 2026 GTM alignments
+        const competitorsData = [
+            {
+                id: "belkins",
+                name: "Belkins",
+                logo: "💼",
+                website: "https://belkins.io",
+                topOffering: "Omnichannel Outbound Lead Gen & Appointment Setting",
+                topOfferingDetail: "Highly targeted cold email campaigns, specialized LinkedIn outbound plays, and high-impact physical-to-digital sequencing backed by robust deliverability engineering.",
+                fullFunnel: "No",
+                fullFunnelDetail: "Primarily outbound. Hyper-focused on top-of-funnel outbound appointment booking, custom market research, and specialized CRM (HubSpot) implementation. Lacks traditional inbound programmatic ad media.",
+                telemarketing: "Yes (Focused Cold Calling)",
+                usp: "Unmatched technical deliverability infrastructure & dedicated 'Center of Excellence' account pods.",
+                uspDetail: "Maintains industry-leading deliverability through proprietary technology (Folderly & Charge) and boasts a 95% customer retention rate by utilizing dedicated multi-disciplinary pods.",
+                clients: ["General Electric", "Cisco", "Zendesk", "Berkeley College", "Acer"],
+                marketingMessage: "Transform buyer pain points into pipeline by unifying your GTM strategy, tools, and outbound execution.",
+                databaseType: "Bespoke / Real-Time Researched",
+                databaseDetail: "No pre-built static database sales. Compiles customized, 100% verified first-party target lists mapped dynamically to client ICPs, fully GDPR & CCPA compliant.",
+                swot: { S: "Industry authority, exceptional email deliverability, proven playbooks.", W: "High price point, less suited for companies wanting mass-volume unstructured leads.", O: "Expanding deeper into HubSpot enablement and regional sales coaching.", T: "Rising anti-spam regulations (GDPR/CASL) threatening lazy outbound agencies." },
+                category: "Outbound Only"
+            },
+            {
+                id: "cience",
+                name: "CIENCE",
+                logo: "🤖",
+                website: "https://www.cience.com",
+                topOffering: "Managed Outbound SDR Teams & CIENCE GO Data Platform",
+                topOfferingDetail: "Scale-oriented outbound delivery combining fractional or dedicated human SDR squads with access to CIENCE GO software suite (Data, Flow, Digital).",
+                fullFunnel: "Yes",
+                fullFunnelDetail: "Full Funnel. Offers multi-channel outbound calling, email, LinkedIn cadences, plus programmatic web display ads (GO Digital) and inbound routing optimization.",
+                telemarketing: "Yes (Multi-channel Call Center)",
+                usp: "SaaS software platform layer (CIENCE GO) tightly bundled with flexible global SDR labor.",
+                uspDetail: "Integrates massive tech-stack automation with human-in-the-loop validation, providing client-facing analytical dashboards that standard agencies cannot replicate.",
+                clients: ["Okta", "Yamaha", "Microsoft", "Salesforce", "Segment"],
+                marketingMessage: "Data-driven B2B GTM and appointment setting powered by human expertise and advanced proprietary AI platforms.",
+                databaseType: "Proprietary Database (CIENCE GO Data)",
+                databaseDetail: "Owns and sells subscription access to a proprietary 140 Million+ contact record database, paired with active validation protocols.",
+                swot: { S: "Massive scale, robust software stack, broad vertical coverage.", W: "SDR quality can vary globally; complex multi-tiered pricing models.", O: "Capitalizing on agentic AI-outbound setups to lower overall campaign CPL.", T: "AI auto-blocking on modern inboxes squeezing standard outbound scale." },
+                category: "Full Funnel"
+            },
+            {
+                id: "ondirect",
+                name: "OnDirect",
+                logo: "📞",
+                website: "https://ondirect.in",
+                topOffering: "Multi-channel Lead Management & Inside Sales Pipeline Acceleration",
+                topOfferingDetail: "Heavy phone-based inside sales campaigns, target account mapping, and progressive lead qualifying designed for enterprise technology providers.",
+                fullFunnel: "Yes",
+                fullFunnelDetail: "Full Funnel. Connects content syndication, email nurture, digital promos, and high-intensity inside sales/telemarketing qualification.",
+                telemarketing: "Yes (High-Touch Tele-Verification)",
+                usp: "The Progressive Leads Framework bridging early syndication to direct telephone handoffs.",
+                uspDetail: "Specializes in multi-stage prospect warming: initial digital content engagement is physically verified by human tele-outreach to deliver pre-qualified enterprise sales-ready leads.",
+                clients: ["Oracle Tech Integrators", "Cloud Infrastructure MNCs", "Enterprise Security Brands", "SaaS Software Providers", "Global IT-Consulting Groups"],
+                marketingMessage: "Lead Forward: Your inside sales and data solutions partner connecting the dots to amplify lead readiness.",
+                databaseType: "Curated Curated Tech-Stack & Inside Sales Database",
+                databaseDetail: "Utilizes specialized B2B contact intelligence tracking over 2,000 technology keywords with real-time profile surveys.",
+                swot: { S: "Highly experienced inside-sales callers, robust double-verification of lead intents.", W: "Heavy reliance on tele-calling which can encounter gatekeeper friction.", O: "Expanding programmatic localized marketing across secondary global regions.", T: "Stricter international calling compliances and phone screening software." },
+                category: "Full Funnel"
+            },
+            {
+                id: "waymedia",
+                name: "Way Media",
+                logo: "🎯",
+                website: "https://way.media",
+                topOffering: "Intent-Driven B2B Demand Gen & Account-Based Marketing (ABM)",
+                topOfferingDetail: "Predictive pipeline generation driven by programmatic display, content syndication, and B.A.N.T. lead routing using behavioral insights.",
+                fullFunnel: "Yes",
+                fullFunnelDetail: "Full Funnel. Focuses heavily on aligning upper-funnel display advertising and intent-discovery content with lower-funnel sales qualification.",
+                telemarketing: "Yes (Tele-Marketing & Event Registrations)",
+                usp: "Proprietary 'Way Media IntentX DSP' predictive intent signaling.",
+                uspDetail: "Leverages predictive modeling to monitor active search topics, web interactions, and digital body language to identify active buying windows before reaching out.",
+                clients: ["SaaS Unicorn Platforms", "Global FinTech Brands", "Cybersecurity Tech Providers", "Enterprise Cloud Integrators", "HR Tech Enterprises"],
+                marketingMessage: "Predictive Demand Generation: Turning B2B buyer intent signals into verified pipeline.",
+                databaseType: "Proprietary GDPR-Compliant B2B Database",
+                databaseDetail: "Maintains an in-house, privacy-compliant global directory containing 275 Million+ B2B contact profiles with active intent overlays.",
+                swot: { S: "Advanced intent-data stack, strong content syndication networks.", W: "High reliance on third-party behavioral cookies (transitioning to first-party cookies).", O: "Expanding interactive webinar and hybrid event registration programs.", T: "Market oversaturation of generic content syndication lowering buyer click rates." },
+                category: "Full Funnel"
+            },
+            {
+                id: "onlyb2b",
+                name: "Only B2B",
+                logo: "🎖️",
+                website: "https://www.only-b2b.com",
+                topOffering: "High-Precision B2B List Building & Multi-Touch Demand Generation",
+                topOfferingDetail: "Targeted database compilation, customized content syndication, and clean MQL-to-SQL marketing automation workflows.",
+                fullFunnel: "Yes",
+                fullFunnelDetail: "Full Funnel. Incorporates early-stage list research and content syndication with progressive telephone validation and inside sales transition.",
+                telemarketing: "Yes (Structured Inside Sales Team)",
+                usp: "Zero-duplicate data guarantee with customized list architecture built around specific personas.",
+                uspDetail: "Rigorous human-in-the-loop compilation methodology that delivers high-intent target accounts while maintaining full global compliance standards.",
+                clients: ["Enterprise IT Systems", "Cloud Computing Providers", "B2B Tech Agencies", "Industrial Equipment Suppliers", "Cybersecurity Networks"],
+                marketingMessage: "Precision-led global demand generation built around your exact Ideal Customer Profile.",
+                databaseType: "Double-Verified In-House & Custom-Assembled",
+                databaseDetail: "Merges internal compiled B2B intelligence with bespoke real-time custom list-building campaigns. Fully compliant with CASL, GDPR, and CCPA.",
+                swot: { S: "Exceptional custom database building, strong anti-spam and privacy postures.", W: "Turnaround times can be longer due to deep human list-validation rules.", O: "Leveraging automated AI agent-assisted data scrubbers to accelerate deliverability.", T: "Rapidly decaying B2B executive contact data requiring constant cleaning." },
+                category: "Full Funnel"
+            },
+            {
+                id: "unbound",
+                name: "Unbound.ia",
+                logo: "⚡",
+                website: "https://unboundia.com",
+                topOffering: "Full-Funnel Brand-to-Revenue GTM & AI-Augmented Performance Media",
+                topOfferingDetail: "Unifies creative brand messaging, ABM (Account-Based Everything), programmatic search/social, and SDRAAS (SDR-as-a-Service) into cohesive GTM workflows.",
+                fullFunnel: "Yes",
+                fullFunnelDetail: "Full Funnel. Strongly integrates brand storytelling with CRO, marketing operations, automated CRM tracking, and outbound execution.",
+                telemarketing: "Yes (AI-Augmented SDR-as-a-Service)",
+                usp: "The 'Brand-to-Revenue' thesis combining emotional brand messaging with hyper-engineered AI systems.",
+                uspDetail: "Applies custom AI tools for programmatic ad bidding, landing page deployment, and data anomaly detection, making campaign speed and accuracy incredibly agile.",
+                clients: ["AWS", "Google Cloud", "Todyl", "Mid-Market SaaS Companies", "Fintech Challengers"],
+                marketingMessage: "A creative B2B agency grounded in revenue impact, where bold ideas convert into bigger wins.",
+                databaseType: "Real-time API & First-Party Programmatic Intent",
+                databaseDetail: "Leverages active programmatic integration with first-party signals, behavioral tools, and real-time custom intent APIs instead of static cold contact directories.",
+                swot: { S: "Highly forward-thinking, integrates creative strategy with analytical media buying.", W: "Requires higher strategic onboarding commitment; not built for basic single-list bulk calling.", O: "Pioneering the market for generative AI-crafted dynamic ad assets for B2B accounts.", T: "Ad platform privacy sandbox changes disrupting traditional behavioral targeting metrics." },
+                category: "Full Funnel"
+            },
+            {
+                id: "vereigen",
+                name: "Vereigen Media",
+                logo: "🛡️",
+                website: "https://vereigenmedia.com",
+                topOffering: "Verified Content Engagement (VCE) & Account-Based Content Syndication",
+                topOfferingDetail: "Drives verified customer acquisition through interactive landing pages, display ads (VM Engage), and dedicated ABM campaigns.",
+                fullFunnel: "Yes",
+                fullFunnelDetail: "Full Funnel. Balances early programmatic display awareness with focused high-intent content syndication and human-verified opt-in lead capture.",
+                telemarketing: "Yes (100% In-House Telephone Validation)",
+                usp: "Proprietary 'VCE Model' with zero outsourcing and total programmatic transparency.",
+                uspDetail: "Focuses on explicit, consent-driven interaction where prospects must actively validate engagement. 200+ internal experts verify every contact record to guarantee zero duplication.",
+                clients: ["ServiceNow", "AnyDesk", "Global Cybersecurity Firms", "SaaS Enterprise Brands", "HR Tech Corporates"],
+                marketingMessage: "Trust is the currency of modern B2B: delivering real engagement from real people, every time.",
+                databaseType: "First-Party Consented & VCE-Verified Database",
+                databaseDetail: "Built organically through continuous in-house content networks and direct consent channels. No scraped list exchanges, optimizing delivery safety.",
+                swot: { S: "Extremely high data compliance standards, robust in-house quality controls.", W: "Requires quality client content assets (whitepapers/case studies) to be successful.", O: "Accelerating SMART ABM capabilities paired with dynamic local advertising formats.", T: "Rising buyer fatigue with gated content forms limiting initial lead volume." },
+                category: "Full Funnel"
+            }
+        ];
+    </script>
+
+    <!-- MAIN NAVIGATION HEADER -->
+    <header class="sticky top-0 z-30 border-b border-slate-200 bg-white/90 backdrop-blur transition-colors dark:border-slate-800 dark:bg-slate-900/90 py-4 px-6 shadow-sm">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+                <div class="p-2.5 bg-brand-800 text-white rounded-xl shadow-md dark:bg-brand-500">
+                    <i class="fa-solid fa-chart-line text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl md:text-2xl font-extrabold text-brand-900 dark:text-white tracking-tight flex items-center gap-2">
+                        B2B Competitor Intelligence <span class="text-sm px-2.5 py-0.5 bg-slate-100 text-slate-800 dark:bg-slate-800 dark:text-slate-200 rounded-full font-semibold border border-slate-200 dark:border-slate-700">2026 Strategy</span>
+                    </h1>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">Deep-dive comparative matrix & strategic messaging analysis of lead generation players</p>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-3">
+                <!-- Theme toggle button -->
+                <button onclick="toggleDarkMode()" class="p-2.5 rounded-xl border border-slate-200 hover:bg-slate-100 text-slate-700 dark:border-slate-800 dark:hover:bg-slate-800 dark:text-slate-300 transition-all shadow-sm" title="Toggle Theme">
+                    <i id="themeIcon" class="fa-solid fa-moon text-lg"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 md:px-6 py-8">
+        <!-- 2026 STRATEGIC B2B GTM TRENDS WIDGETS -->
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+            <div class="bg-gradient-to-br from-brand-800 to-brand-900 text-white p-6 rounded-2xl shadow-xl transition-all duration-300 hover:scale-[1.01] relative overflow-hidden group">
+                <div class="absolute -right-6 -bottom-6 text-white/5 text-9xl font-bold group-hover:scale-110 transition-transform duration-500">26</div>
+                <div class="flex items-center gap-3 mb-3">
+                    <div class="p-2 bg-white/10 rounded-lg text-emerald-400">
+                        <i class="fa-solid fa-bullseye text-lg"></i>
+                    </div>
+                    <span class="text-xs font-semibold uppercase tracking-wider text-slate-300">Market Paradigm</span>
+                </div>
+                <h3 class="text-lg font-bold mb-1">Precision Over Bulk Volume</h3>
+                <p class="text-xs text-slate-300 leading-relaxed">In 2026, raw dial/email volume suffers from severe diminishing returns. Top agencies utilize intent telemetry and custom-profile research to replace mass spam with laser relevancy.</p>
+            </div>
+
+            <div class="bg-white border border-slate-200 dark:bg-slate-900 dark:border-slate-800 p-6 rounded-2xl shadow-lg transition-all duration-300 hover:scale-[1.01] flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="p-2 bg-indigo-50 dark:bg-indigo-950/50 rounded-lg text-indigo-500">
+                            <i class="fa-solid fa-shield-halved text-lg"></i>
+                        </div>
+                        <span class="text-xs font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500">Compliance & Privacy</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-800 dark:text-slate-200 mb-1">The First-Party Consent Standard</h3>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">GDPR, CCPA, and Canadian CASL parameters are central. Standard scraped legacy databases have high bounce rates; modern verification like Vereigen’s VCE is standard.</p>
+                </div>
+            </div>
+
+            <div class="bg-white border border-slate-200 dark:bg-slate-900 dark:border-slate-800 p-6 rounded-2xl shadow-lg transition-all duration-300 hover:scale-[1.01] flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="p-2 bg-emerald-50 dark:bg-emerald-950/50 rounded-lg text-emerald-500">
+                            <i class="fa-solid fa-microchip text-lg"></i>
+                        </div>
+                        <span class="text-xs font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500">Technology Driver</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-800 dark:text-slate-200 mb-1">Agentic AI & DSP Integration</h3>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">Agencies like Unbound.ia and Way Media embed predictive intent intelligence directly into programmatic display buying, optimizing SDR outreach in real time.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- FILTER BAR SECTION -->
+        <section class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 mb-8 shadow-md">
+            <div class="flex flex-col md:flex-row gap-4 items-center justify-between">
+                
+                <!-- Search input -->
+                <div class="relative w-full md:w-1/3">
+                    <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </span>
+                    <input type="text" id="searchInput" oninput="applyFilters()" placeholder="Search clients, offers, keywords..." 
+                        class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 dark:bg-slate-950 dark:border-slate-800 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 transition-all">
+                </div>
+
+                <!-- Filters & Controls -->
+                <div class="flex flex-wrap items-center gap-3 w-full md:w-auto justify-end">
+                    
+                    <!-- Full funnel filter -->
+                    <div>
+                        <select id="funnelFilter" onchange="applyFilters()" class="px-3.5 py-2.5 bg-slate-50 border border-slate-200 dark:bg-slate-950 dark:border-slate-800 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 cursor-pointer transition-all">
+                            <option value="all">All GTM Models</option>
+                            <option value="full">Full-Funnel Campaigns</option>
+                            <option value="outbound">Outbound Specialization</option>
+                        </select>
+                    </div>
+
+                    <!-- Database Type filter -->
+                    <div>
+                        <select id="databaseFilter" onchange="applyFilters()" class="px-3.5 py-2.5 bg-slate-50 border border-slate-200 dark:bg-slate-950 dark:border-slate-800 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 cursor-pointer transition-all">
+                            <option value="all">All Databases</option>
+                            <option value="bespoke">Bespoke / Custom Build</option>
+                            <option value="proprietary">Proprietary Assets</option>
+                        </select>
+                    </div>
+
+                    <div class="h-8 w-px bg-slate-200 dark:bg-slate-800 hidden sm:block"></div>
+
+                    <!-- Layout switcher buttons -->
+                    <div class="flex bg-slate-100 dark:bg-slate-950 p-1 rounded-xl">
+                        <button onclick="switchLayout('table')" id="layoutTableBtn" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all bg-white dark:bg-slate-900 shadow-sm text-brand-800 dark:text-brand-100">
+                            <i class="fa-solid fa-table-list mr-1.5"></i>Table View
+                        </button>
+                        <button onclick="switchLayout('cards')" id="layoutCardsBtn" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200">
+                            <i class="fa-solid fa-border-all mr-1.5"></i>Card Deck
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+            
+            <!-- Quick Active Counts indicator -->
+            <div class="mt-4 pt-4 border-t border-slate-100 dark:border-slate-800/60 flex items-center justify-between text-xs text-slate-400">
+                <div id="resultsCounter">Showing all 7 competitors</div>
+                <div class="flex items-center gap-2">
+                    <span class="inline-block w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <span>Verified live data for 2026 operations</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- CORE COMPARISON AREA -->
+        <section id="comparisonContainer">
+            
+            <!-- VIEW A: SLEEK STICKY COMPARISON TABLE -->
+            <div id="tableView" class="overflow-x-auto rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-lg relative">
+                <table class="w-full text-left border-collapse min-w-[1200px]">
+                    <thead>
+                        <tr class="bg-slate-100/80 dark:bg-slate-950 border-b border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400 text-xs font-bold uppercase tracking-wider">
+                            <th class="p-4 w-60 sticky left-0 bg-slate-100/90 dark:bg-slate-950 z-20 shadow-[4px_0_8px_-4px_rgba(0,0,0,0.1)]">Competitor Agency</th>
+                            <th class="p-4 w-72">Top Offering (2026)</th>
+                            <th class="p-4 w-48 text-center">Full Funnel + Tele?</th>
+                            <th class="p-4 w-64">Biggest USP</th>
+                            <th class="p-4 w-56">Key Marketing Message</th>
+                            <th class="p-4 w-64">Top 5 Notable Clients</th>
+                            <th class="p-4 w-52">Database Model</th>
+                            <th class="p-4 w-40 text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody" class="divide-y divide-slate-200 dark:divide-slate-800 text-sm">
+                        <!-- Rendered by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- VIEW B: CARD COMPARISON DECK -->
+            <div id="cardsView" class="hidden grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Rendered by JavaScript -->
+            </div>
+
+            <!-- Empty state fallback -->
+            <div id="emptyState" class="hidden flex-col items-center justify-center py-20 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl text-center">
+                <div class="w-16 h-16 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-400 mb-4 text-2xl">
+                    <i class="fa-solid fa-magnifying-glass-chart"></i>
+                </div>
+                <h4 class="text-lg font-bold">No competitors matched your filter combinations</h4>
+                <p class="text-sm text-slate-400 max-w-sm mt-1">Try resetting your database select parameter or clearing your active search text.</p>
+                <button onclick="resetFilters()" class="mt-4 px-4 py-2 bg-brand-800 hover:bg-brand-900 text-white rounded-xl text-xs font-medium shadow-md">
+                    Reset Filters
+                </button>
+            </div>
+
+        </section>
+
+        <!-- SLIDE-OUT DETAIL DRAWER (COMPETITOR INTELLIGENCE CARD) -->
+        <div id="drawerBackdrop" onclick="closeDrawer()" class="fixed inset-0 bg-black/50 opacity-0 pointer-events-none transition-opacity duration-300 z-40"></div>
+        <div id="drawer" class="fixed top-0 right-0 h-full w-full max-w-lg bg-white dark:bg-slate-900 shadow-2xl z-50 transform translate-x-full transition-transform duration-300 overflow-y-auto border-l border-slate-200 dark:border-slate-800">
+            <div class="p-6 flex flex-col h-full justify-between">
+                <div>
+                    <!-- Drawer Header -->
+                    <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4 mb-5">
+                        <div class="flex items-center gap-3">
+                            <div id="drawerLogo" class="text-4xl">💼</div>
+                            <div>
+                                <h2 id="drawerTitle" class="text-xl font-extrabold text-slate-800 dark:text-white">Agency Profile</h2>
+                                <a id="drawerLink" href="#" target="_blank" class="text-xs text-brand-500 hover:underline inline-flex items-center gap-1.5">
+                                    Visit website <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <button onclick="closeDrawer()" class="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors text-slate-400">
+                            <i class="fa-solid fa-times text-lg"></i>
+                        </button>
+                    </div>
+
+                    <!-- Drawer Details Body -->
+                    <div class="space-y-6">
+                        
+                        <!-- Core Details segment -->
+                        <div>
+                            <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">2026 Core Service Package</span>
+                            <p id="drawerOffering" class="text-sm font-semibold text-slate-800 dark:text-slate-100 mt-1">...</p>
+                            <p id="drawerOfferingDetail" class="text-xs text-slate-400 dark:text-slate-400 mt-1 leading-relaxed">...</p>
+                        </div>
+
+                        <!-- Full Funnel Badge -->
+                        <div class="flex items-center gap-8 bg-slate-50 dark:bg-slate-950 p-4 rounded-xl border border-slate-100 dark:border-slate-800/80">
+                            <div>
+                                <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Full-Funnel Campaigns</span>
+                                <div id="drawerFullFunnelBadge" class="mt-1">...</div>
+                            </div>
+                            <div>
+                                <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Inside Telemarketing</span>
+                                <div id="drawerTelemarketing" class="text-xs font-semibold text-slate-800 dark:text-slate-100 mt-1">...</div>
+                            </div>
+                        </div>
+
+                        <!-- USP Breakdowns -->
+                        <div>
+                            <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">Core USP</span>
+                            <p id="drawerUSP" class="text-sm font-bold text-slate-800 dark:text-slate-100 mt-1">...</p>
+                            <p id="drawerUSPDetail" class="text-xs text-slate-400 dark:text-slate-400 mt-1 leading-relaxed">...</p>
+                        </div>
+
+                        <!-- Global Database Integrity -->
+                        <div>
+                            <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">Database & List Ownership</span>
+                            <div class="flex items-center gap-2 mt-1">
+                                <span class="p-1 px-2.5 bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300 text-[10px] rounded font-bold uppercase tracking-wider border border-emerald-100 dark:border-emerald-800/50" id="drawerDatabaseType">...</span>
+                            </div>
+                            <p id="drawerDatabaseDetail" class="text-xs text-slate-400 dark:text-slate-400 mt-2 leading-relaxed">...</p>
+                        </div>
+
+                        <!-- Top 5 Client logos/names -->
+                        <div>
+                            <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">Top 5 Representative Clients</span>
+                            <div id="drawerClients" class="flex flex-wrap gap-1.5 mt-2">
+                                <!-- Dynamic Badges -->
+                            </div>
+                        </div>
+
+                        <!-- SWOT Framework -->
+                        <div class="border-t border-slate-100 dark:border-slate-800/80 pt-4">
+                            <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">SWOT Strategy Analysis (2026 Focus)</span>
+                            <div class="grid grid-cols-2 gap-3 mt-3 text-xs">
+                                <div class="bg-blue-50 dark:bg-slate-950 p-3 rounded-lg border border-blue-100 dark:border-slate-800">
+                                    <span class="font-bold text-blue-600 dark:text-blue-400 block mb-1 uppercase tracking-widest text-[10px]">Strengths</span>
+                                    <p id="swotS" class="text-[11px] text-slate-600 dark:text-slate-300">...</p>
+                                </div>
+                                <div class="bg-red-50 dark:bg-slate-950 p-3 rounded-lg border border-red-100 dark:border-slate-800">
+                                    <span class="font-bold text-red-600 dark:text-red-400 block mb-1 uppercase tracking-widest text-[10px]">Weaknesses</span>
+                                    <p id="swotW" class="text-[11px] text-slate-600 dark:text-slate-300">...</p>
+                                </div>
+                                <div class="bg-green-50 dark:bg-slate-950 p-3 rounded-lg border border-green-100 dark:border-slate-800">
+                                    <span class="font-bold text-green-600 dark:text-green-400 block mb-1 uppercase tracking-widest text-[10px]">Opportunities</span>
+                                    <p id="swotO" class="text-[11px] text-slate-600 dark:text-slate-300">...</p>
+                                </div>
+                                <div class="bg-amber-50 dark:bg-slate-950 p-3 rounded-lg border border-amber-100 dark:border-slate-800">
+                                    <span class="font-bold text-amber-600 dark:text-amber-400 block mb-1 uppercase tracking-widest text-[10px]">Threats</span>
+                                    <p id="swotT" class="text-[11px] text-slate-600 dark:text-slate-300">...</p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="pt-6 border-t border-slate-100 dark:border-slate-800/80 mt-6">
+                    <button id="drawerOpenWebsite" onclick="" class="w-full py-2.5 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-100 rounded-xl font-semibold text-xs text-center transition-colors">
+                        Launch Site
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- NOTIFICATION TOAST BOX -->
+        <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-12 opacity-0 pointer-events-none transition-all duration-300 flex items-center gap-3 bg-slate-900 text-white dark:bg-white dark:text-slate-900 p-4 rounded-xl shadow-2xl text-xs font-semibold">
+            <span id="toastIcon"><i class="fa-solid fa-check text-emerald-400"></i></span>
+            <span id="toastMsg">Action complete</span>
+        </div>
+    </main>
+
+    <script>
+        let currentLayout = 'table';
+        let filteredCompetitors = [...competitorsData];
+        let currentActiveDrawerId = null;
+
+        // On document load, trigger render
+        window.onload = function() {
+            // Check user preferences for system dark mode
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                document.documentElement.classList.add('dark');
+                updateThemeToggleIcon(true);
+            }
+            renderComparison();
+        };
+
+        // Theme Switch Logic
+        function toggleDarkMode() {
+            const isDark = document.documentElement.classList.toggle('dark');
+            updateThemeToggleIcon(isDark);
+            showToast(isDark ? "Dark theme active" : "Light theme active", isDark ? "fa-solid fa-moon text-indigo-400" : "fa-solid fa-sun text-amber-500");
+        }
+
+        function updateThemeToggleIcon(isDark) {
+            const icon = document.getElementById('themeIcon');
+            if (isDark) {
+                icon.className = "fa-solid fa-sun text-lg text-amber-400";
+            } else {
+                icon.className = "fa-solid fa-moon text-lg text-slate-700";
+            }
+        }
+
+        // Layout switcher
+        function switchLayout(layout) {
+            currentLayout = layout;
+            
+            const tableBtn = document.getElementById('layoutTableBtn');
+            const cardsBtn = document.getElementById('layoutCardsBtn');
+            const tableView = document.getElementById('tableView');
+            const cardsView = document.getElementById('cardsView');
+
+            if (layout === 'table') {
+                tableBtn.className = "px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all bg-white dark:bg-slate-900 shadow-sm text-brand-800 dark:text-brand-100";
+                cardsBtn.className = "px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200";
+                tableView.classList.remove('hidden');
+                cardsView.classList.add('hidden');
+            } else {
+                cardsBtn.className = "px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all bg-white dark:bg-slate-900 shadow-sm text-brand-800 dark:text-brand-100";
+                tableBtn.className = "px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200";
+                tableView.classList.add('hidden');
+                cardsView.classList.remove('hidden');
+            }
+            renderComparison();
+        }
+
+        // Core filter execution
+        function applyFilters() {
+            const searchVal = document.getElementById('searchInput').value.toLowerCase().trim();
+            const funnelVal = document.getElementById('funnelFilter').value;
+            const databaseVal = document.getElementById('databaseFilter').value;
+
+            filteredCompetitors = competitorsData.filter(c => {
+                // Search matching (checks Name, USP, Clients, Offering, Marketing Message)
+                const matchesSearch = !searchVal || 
+                    c.name.toLowerCase().includes(searchVal) ||
+                    c.topOffering.toLowerCase().includes(searchVal) ||
+                    c.usp.toLowerCase().includes(searchVal) ||
+                    c.marketingMessage.toLowerCase().includes(searchVal) ||
+                    c.clients.some(client => client.toLowerCase().includes(searchVal)) ||
+                    c.databaseType.toLowerCase().includes(searchVal);
+
+                // Funnel matching
+                const matchesFunnel = funnelVal === 'all' || 
+                    (funnelVal === 'full' && c.fullFunnel === 'Yes') ||
+                    (funnelVal === 'outbound' && c.fullFunnel === 'No');
+
+                // Database matching
+                const matchesDatabase = databaseVal === 'all' ||
+                    (databaseVal === 'bespoke' && c.databaseType.includes('Bespoke')) ||
+                    (databaseVal === 'proprietary' && c.databaseType.includes('Proprietary'));
+
+                return matchesSearch && matchesFunnel && matchesDatabase;
+            });
+
+            // Update Counter Text
+            const counter = document.getElementById('resultsCounter');
+            if (filteredCompetitors.length === competitorsData.length) {
+                counter.innerText = "Showing all 7 competitors";
+            } else {
+                counter.innerText = `Showing ${filteredCompetitors.length} of ${competitorsData.length} matches`;
+            }
+
+            renderComparison();
+        }
+
+        function resetFilters() {
+            document.getElementById('searchInput').value = "";
+            document.getElementById('funnelFilter').value = "all";
+            document.getElementById('databaseFilter').value = "all";
+            applyFilters();
+            showToast("Filters successfully reset", "fa-solid fa-rotate-left text-slate-400");
+        }
+
+        // Render implementation
+        function renderComparison() {
+            const tableBody = document.getElementById('tableBody');
+            const cardsView = document.getElementById('cardsView');
+            const emptyState = document.getElementById('emptyState');
+
+            // Toggle empty state fallback container
+            if (filteredCompetitors.length === 0) {
+                emptyState.classList.remove('hidden');
+                document.getElementById('tableView').classList.add('hidden');
+                cardsView.classList.add('hidden');
+                return;
+            } else {
+                emptyState.classList.add('hidden');
+                if (currentLayout === 'table') {
+                    document.getElementById('tableView').classList.remove('hidden');
+                } else {
+                    cardsView.classList.remove('hidden');
+                }
+            }
+
+            // RENDERING TABLE ROW LOGICS
+            tableBody.innerHTML = filteredCompetitors.map(c => `
+                <tr class="hover:bg-slate-50/70 dark:hover:bg-slate-800/40 transition-colors group">
+                    <!-- Brand/Title Column (Sticky left) -->
+                    <td class="p-4 font-bold text-slate-800 dark:text-white sticky left-0 bg-white dark:bg-slate-900 z-10 shadow-[4px_0_8px_-4px_rgba(0,0,0,0.1)] transition-colors group-hover:bg-slate-50 dark:group-hover:bg-slate-800/60">
+                        <div class="flex items-center gap-2.5">
+                            <span class="text-2xl">${c.logo}</span>
+                            <div>
+                                <span class="text-sm font-extrabold text-brand-900 dark:text-brand-100">${c.name}</span>
+                                <div class="text-[10px] text-brand-500 font-medium">${c.category}</div>
+                            </div>
+                        </div>
+                    </td>
+                    
+                    <!-- Top Offering 2026 -->
+                    <td class="p-4 leading-relaxed max-w-xs">
+                        <div class="font-semibold text-slate-800 dark:text-slate-100 text-xs">${c.topOffering}</div>
+                        <div class="text-[11px] text-slate-400 dark:text-slate-400 mt-1 line-clamp-2" title="${c.topOfferingDetail}">${c.topOfferingDetail}</div>
+                    </td>
+
+                    <!-- Full Funnel Checkbox/Icon -->
+                    <td class="p-4 text-center">
+                        <div class="flex flex-col items-center justify-center gap-1">
+                            ${c.fullFunnel === 'Yes' 
+                                ? `<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400 border border-emerald-100 dark:border-emerald-900/40"><i class="fa-solid fa-circle-check"></i> Full Funnel</span>` 
+                                : `<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400 border border-slate-200 dark:border-slate-700/60"><i class="fa-solid fa-circle-minus"></i> Outbound</span>`
+                            }
+                            <span class="text-[10px] text-slate-400 font-medium">SDR Tele: <strong class="text-slate-600 dark:text-slate-300">Yes</strong></span>
+                        </div>
+                    </td>
+
+                    <!-- Biggest USP -->
+                    <td class="p-4 max-w-xs leading-relaxed">
+                        <div class="font-bold text-slate-800 dark:text-slate-100 text-xs flex items-center gap-1">
+                            <i class="fa-solid fa-star text-amber-500 text-[10px]"></i> ${c.usp}
+                        </div>
+                        <div class="text-[11px] text-slate-400 dark:text-slate-400 mt-1 line-clamp-2" title="${c.uspDetail}">${c.uspDetail}</div>
+                    </td>
+
+                    <!-- Key Marketing Message -->
+                    <td class="p-4 max-w-xs text-xs italic text-slate-600 dark:text-slate-300 leading-relaxed font-serif">
+                        "${c.marketingMessage}"
+                    </td>
+
+                    <!-- Top 5 Clients -->
+                    <td class="p-4">
+                        <div class="flex flex-wrap gap-1 max-w-[200px]">
+                            ${c.clients.map(client => `
+                                <span class="px-1.5 py-0.5 bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300 rounded text-[9px] font-semibold border border-slate-200/50 dark:border-slate-700/50">${client}</span>
+                            `).join('')}
+                        </div>
+                    </td>
+
+                    <!-- Database Model -->
+                    <td class="p-4 leading-relaxed max-w-[200px]">
+                        <span class="inline-block text-[9px] font-bold bg-blue-50 text-blue-800 dark:bg-blue-950/40 dark:text-blue-300 border border-blue-100 dark:border-blue-900/40 px-2 py-0.5 rounded uppercase tracking-wider mb-1">${c.databaseType}</span>
+                        <div class="text-[10px] text-slate-400 line-clamp-2" title="${c.databaseDetail}">${c.databaseDetail}</div>
+                    </td>
+
+                    <!-- Action buttons -->
+                    <td class="p-4 text-center">
+                        <div class="flex items-center justify-center gap-2">
+                            <button onclick="openDrawer('${c.id}')" class="px-3 py-1.5 bg-slate-100 hover:bg-brand-100 hover:text-brand-800 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-200 rounded-lg text-[11px] font-bold transition-all" title="View Deep Analysis">
+                                Analyze <i class="fa-solid fa-angle-right ml-0.5"></i>
+                            </button>
+                            <a href="${c.website}" target="_blank" class="p-1.5 text-slate-400 hover:text-brand-800 dark:hover:text-brand-400 transition-colors" title="Launch Website">
+                                <i class="fa-solid fa-arrow-up-right-from-square text-[11px]"></i>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+
+            // RENDERING CARD MATRIX DECK
+            cardsView.innerHTML = filteredCompetitors.map(c => `
+                <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 shadow-lg flex flex-col justify-between transition-all hover:shadow-xl group">
+                    <div>
+                        <!-- Card Header -->
+                        <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3 mb-4">
+                            <div class="flex items-center gap-3">
+                                <span class="text-3xl">${c.logo}</span>
+                                <div>
+                                    <h4 class="font-extrabold text-slate-800 dark:text-white text-base group-hover:text-brand-500 transition-colors">${c.name}</h4>
+                                    <span class="text-[10px] px-2 py-0.5 bg-brand-50 text-brand-700 dark:bg-slate-800 dark:text-brand-300 rounded-full font-bold uppercase tracking-wider">${c.category}</span>
+                                </div>
+                            </div>
+                            <a href="${c.website}" target="_blank" class="p-2 bg-slate-50 dark:bg-slate-950 rounded-full text-slate-400 hover:text-brand-500 transition-colors">
+                                <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                            </a>
+                        </div>
+
+                        <!-- Card Body Segments -->
+                        <div class="space-y-4">
+                            
+                            <!-- offering -->
+                            <div>
+                                <span class="text-[9px] font-bold uppercase tracking-wider text-slate-400">2026 Offering</span>
+                                <p class="text-xs font-semibold text-slate-800 dark:text-slate-100 mt-0.5">${c.topOffering}</p>
+                            </div>
+
+                            <!-- Full funnel badge -->
+                            <div class="flex items-center gap-4 bg-slate-50 dark:bg-slate-950 p-2.5 rounded-xl border border-slate-100 dark:border-slate-800/60">
+                                <div>
+                                    <span class="text-[8px] font-bold uppercase tracking-wider text-slate-400">Full-Funnel</span>
+                                    <div class="text-[10px] font-bold ${c.fullFunnel === 'Yes' ? 'text-emerald-500' : 'text-slate-400'}">
+                                        ${c.fullFunnel === 'Yes' ? '<i class="fa-solid fa-circle-check"></i> Enabled' : '<i class="fa-solid fa-circle-minus"></i> No'}
+                                    </div>
+                                </div>
+                                <div>
+                                    <span class="text-[8px] font-bold uppercase tracking-wider text-slate-400">Inside Sales</span>
+                                    <div class="text-[10px] font-bold text-slate-800 dark:text-slate-100">Yes (Telephony Outbound)</div>
+                                </div>
+                            </div>
+
+                            <!-- USP -->
+                            <div>
+                                <span class="text-[9px] font-bold uppercase tracking-wider text-slate-400">Core USP</span>
+                                <p class="text-xs font-bold text-slate-800 dark:text-slate-100 mt-0.5"><i class="fa-solid fa-circle-nodes text-brand-500 text-[10px] mr-1"></i> ${c.usp}</p>
+                            </div>
+
+                            <!-- Database info -->
+                            <div>
+                                <span class="text-[9px] font-bold uppercase tracking-wider text-slate-400">Database Ownership</span>
+                                <p class="text-xs font-semibold text-slate-600 dark:text-slate-300 mt-0.5">${c.databaseType}</p>
+                            </div>
+
+                            <!-- Marketing Message -->
+                            <div class="bg-slate-50 dark:bg-slate-950 p-3 rounded-xl border border-slate-100 dark:border-slate-800/40">
+                                <span class="text-[8px] font-bold uppercase tracking-wider text-slate-400">Key Marketing Message</span>
+                                <p class="text-xs italic text-slate-600 dark:text-slate-300 font-serif mt-1 leading-relaxed">"${c.marketingMessage}"</p>
+                            </div>
+
+                            <!-- Clients -->
+                            <div>
+                                <span class="text-[9px] font-bold uppercase tracking-wider text-slate-400">Top 5 Clients</span>
+                                <div class="flex flex-wrap gap-1 mt-1">
+                                    ${c.clients.map(client => `
+                                        <span class="px-1.5 py-0.5 bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300 rounded text-[9px] font-semibold border border-slate-200/50 dark:border-slate-700/50">${client}</span>
+                                    `).join('')}
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- Action clicker -->
+                    <div class="pt-4 border-t border-slate-100 dark:border-slate-800/80 mt-4">
+                        <button onclick="openDrawer('${c.id}')" class="w-full py-2.5 bg-slate-900 hover:bg-brand-800 text-white rounded-xl text-xs font-bold transition-colors shadow">
+                            Compare Analysis Details <i class="fa-solid fa-arrow-right-long ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Drawer display orchestration
+        function openDrawer(id) {
+            const data = competitorsData.find(c => c.id === id);
+            if (!data) return;
+
+            currentActiveDrawerId = id;
+
+            // Inject dataset properties
+            document.getElementById('drawerLogo').innerText = data.logo;
+            document.getElementById('drawerTitle').innerText = data.name;
+            document.getElementById('drawerOffering').innerText = data.topOffering;
+            document.getElementById('drawerOfferingDetail').innerText = data.topOfferingDetail;
+            document.getElementById('drawerFullFunnelBadge').innerHTML = data.fullFunnel === 'Yes'
+                ? `<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded text-[10px] font-bold bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400 border border-emerald-100 dark:border-emerald-900/40"><i class="fa-solid fa-check"></i> Enabled</span>`
+                : `<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded text-[10px] font-bold bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400 border border-slate-200"><i class="fa-solid fa-minus"></i> Outbound Only</span>`;
+            
+            document.getElementById('drawerTelemarketing').innerText = data.telemarketing;
+            document.getElementById('drawerUSP').innerText = data.usp;
+            document.getElementById('drawerUSPDetail').innerText = data.uspDetail;
+            document.getElementById('drawerDatabaseType').innerText = data.databaseType;
+            document.getElementById('drawerDatabaseDetail').innerText = data.databaseDetail;
+            
+            // Build Client badges
+            const clientsBox = document.getElementById('drawerClients');
+            clientsBox.innerHTML = data.clients.map(client => `
+                <span class="px-2 py-1 bg-slate-100 text-slate-800 dark:bg-slate-800 dark:text-slate-200 border border-slate-200/50 dark:border-slate-700 rounded-lg text-[10px] font-semibold">${client}</span>
+            `).join('');
+
+            // Build SWOT structures
+            document.getElementById('swotS').innerText = data.swot.S;
+            document.getElementById('swotW').innerText = data.swot.W;
+            document.getElementById('swotO').innerText = data.swot.O;
+            document.getElementById('swotT').innerText = data.swot.T;
+
+            // Build Website & Copy bindings
+            const linkElem = document.getElementById('drawerLink');
+            linkElem.href = data.website;
+
+            const openBtn = document.getElementById('drawerOpenWebsite');
+            openBtn.setAttribute('onclick', `window.open('${data.website}', '_blank')`);
+
+            // Open Animation classes
+            const drawer = document.getElementById('drawer');
+            const backdrop = document.getElementById('drawerBackdrop');
+
+            backdrop.classList.remove('opacity-0', 'pointer-events-none');
+            backdrop.classList.add('opacity-100');
+            drawer.classList.remove('translate-x-full');
+            drawer.classList.add('translate-x-0');
+        }
+
+        function closeDrawer() {
+            const drawer = document.getElementById('drawer');
+            const backdrop = document.getElementById('drawerBackdrop');
+
+            backdrop.classList.remove('opacity-100');
+            backdrop.classList.add('opacity-0', 'pointer-events-none');
+            drawer.classList.remove('translate-x-0');
+            drawer.classList.add('translate-x-full');
+
+            currentActiveDrawerId = null;
+        }
+
+        // Beautiful custom Toast Alert mechanism (Safe replacement of window.alert)
+        function showToast(message, iconClass = "fa-solid fa-check text-emerald-400") {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toastMsg');
+            const toastIcon = document.getElementById('toastIcon');
+
+            toastMsg.innerText = message;
+            toastIcon.innerHTML = `<i class="${iconClass}"></i>`;
+
+            toast.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-12');
+            toast.classList.add('opacity-100', 'translate-y-0');
+
+            setTimeout(() => {
+                toast.classList.remove('opacity-100', 'translate-y-0');
+                toast.classList.add('opacity-0', 'pointer-events-none', 'translate-y-12');
+            }, 3500);
+        }
+    </script>
+</body>
+</html>
